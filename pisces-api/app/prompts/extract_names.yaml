@@ -1,4 +1,4 @@
-model: qwen/qwen3.6-plus
+model: google/gemini-3.1-pro-preview
 
 system: |
   Bạn là chuyên gia ngôn ngữ Trung-Việt, chuyên về biên dịch truyện (tiên hiệp, huyền huyễn, đô thị, võng du...).

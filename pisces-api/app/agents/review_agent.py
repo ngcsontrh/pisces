@@ -35,7 +35,7 @@ async def review_agent(state: ChapterState) -> dict:
     retry = state.get("retry_count", 0)
     logger.info("Running review (attempt %d)...", retry + 1)
 
-    llm = get_llm(model=prompt["model"], temperature=0.1)
+    llm = get_llm(model=prompt["model"], temperature=0.1, reasoning_effort="medium")
     structured_llm = llm.with_structured_output(ReviewResult, method="json_schema")
 
     try:

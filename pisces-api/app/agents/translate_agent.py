@@ -34,7 +34,10 @@ async def translate_agent(state: ChapterState) -> dict:
 
     previous_summary = state.get("previous_summary", "").strip()
     if previous_summary:
-        context_section = "**Ngữ cảnh từ chương trước (để dịch mạch lạc, đúng nhân xưng):**\n" + previous_summary
+        context_section = (
+            "**Ngữ cảnh từ chương trước (để dịch mạch lạc, đúng nhân xưng):**\n"
+            + previous_summary
+        )
     else:
         context_section = ""
 
@@ -54,7 +57,7 @@ async def translate_agent(state: ChapterState) -> dict:
     logger.info("Feedback section: %s", feedback_section)
     logger.info("Running translate (attempt %d)...", retry + 1)
 
-    llm = get_llm(model=prompt["model"], temperature=0.3)
+    llm = get_llm(model=prompt["model"], temperature=0.3, reasoning_effort="low")
     structured_llm = llm.with_structured_output(TranslateResult, method="json_schema")
 
     try:

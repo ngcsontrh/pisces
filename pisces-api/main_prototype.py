@@ -77,7 +77,9 @@ async def main() -> None:
 
     for chapter_path in chapters:
         try:
-            previous_summary = await process_chapter(graph, chapter_path, previous_summary)
+            previous_summary = await process_chapter(
+                graph, chapter_path, previous_summary
+            )
         except Exception as exc:
             logger.exception("Failed to process %s: %s", chapter_path.name, exc)
             raise

@@ -15,7 +15,7 @@ from pydantic import SecretStr
 def get_llm(
     model: str,
     temperature: float = 0.3,
-    reasoning_effort: str = "high",
+    reasoning_effort: str = "medium",
 ) -> ChatOpenAI:
     """Return a ``ChatOpenAI`` client configured for the given model.
 

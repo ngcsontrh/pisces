@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-from pathlib import Path
 from typing import cast
 
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -15,14 +14,14 @@ from app.schemas.graph.names import NamesExtractionResult
 
 logger = logging.getLogger(__name__)
 
-_GLOSSARY_PATH = Path(__file__).parent.parent / "dicts" / "glossary.txt"
-
 
 async def extract_names_agent(state: ChapterState) -> dict:
-    """Node 2: Call LLM to extract and unify proper names from the chapter."""
-    glossary_text = ""
-    if _GLOSSARY_PATH.exists():
-        glossary_text = _GLOSSARY_PATH.read_text(encoding="utf-8").strip()
+    """Node: Call LLM to extract and unify proper names from the chapter.
+
+    The glossary is pre-loaded by ``TranslationService`` and injected into
+    ``state["glossary_text"]`` — agents never touch the database directly.
+    """
+    glossary_text = state.get("glossary_text", "").strip()
 
     prompt = load_prompt("extract_names")
 
@@ -33,7 +32,9 @@ async def extract_names_agent(state: ChapterState) -> dict:
     )
 
     llm = get_llm(model=prompt["model"], temperature=0.2)
-    structured_llm = llm.with_structured_output(NamesExtractionResult, method="json_schema")
+    structured_llm = llm.with_structured_output(
+        NamesExtractionResult, method="json_schema"
+    )
 
     try:
         result = cast(

@@ -28,7 +28,7 @@ async def summarize_agent(state: ChapterState) -> dict:
 
     logger.info("Running summarize_agent to generate chapter background context...")
 
-    llm = get_llm(model=prompt["model"], temperature=0.3)
+    llm = get_llm(model=prompt["model"], temperature=0.3, reasoning_effort="medium")
     structured_llm = llm.with_structured_output(SummarizeResult, method="json_schema")
 
     try:
